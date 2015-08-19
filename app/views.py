@@ -3,6 +3,8 @@ from app import app
 
 from app import db,models
 from relay_control import Relay
+import os
+
 RELAY_PIN = 14
 
 @app.route('/index')
@@ -11,7 +13,8 @@ def index():
 
 @app.route('/turnon')
 def turnon():
-    Relay.turnOn(RELAY_PIN)
+    if os.environ.get('TEST_NO_PI') is None:
+        Relay.turnOn(RELAY_PIN)
     logEntry = models.EventLog(source="WebUI",action="TurnOn")
     db.session.add(logEntry)
     db.session.commit()
@@ -19,7 +22,8 @@ def turnon():
 
 @app.route('/turnoff')
 def turnoff():
-    Relay.turnOff(RELAY_PIN)
+    if os.environ.get('TEST_NO_PI') is None:
+        Relay.turnOff(RELAY_PIN)
     logEntry = models.EventLog(source="WebUI",action="TurnOff")
     db.session.add(logEntry)
     db.session.commit()
