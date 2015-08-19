@@ -1,0 +1,9 @@
+<table class="table table-striped">
+    <thead>
+  	<tr><th>Time</th><th>Action</th><th>Source</th></tr>
+  	</thead>
+    {% for log in logs %}
+    <tr><th>{{log.timestamp}}</th><th>{{log.action}}</th><th>{{log.source}}</th></tr>
+    {% endfor %}
+</table>
+
