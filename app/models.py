@@ -8,9 +8,9 @@ class EventLog(db.Model):
 
     def __init__(self, source, action, timestamp=None):
         if timestamp is None:
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now()
         self.timestamp = timestamp
-        if source is not 'WebUI' and source is not 'Automatic':
+        if source is not 'WebUI' and source is not 'Timer':
             source = 'Invalid Source'
         if action is not 'TurnOn' and action is not 'TurnOff':
             action = 'Invalid Action'
