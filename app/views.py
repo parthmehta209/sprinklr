@@ -2,6 +2,8 @@ from flask import render_template
 from app import app
 
 from app import db,models
+from relay_control import Relay
+RELAY_PIN = 14
 
 @app.route('/index')
 def index():
@@ -9,6 +11,7 @@ def index():
 
 @app.route('/turnon')
 def turnon():
+    Relay.turnOn(RELAY_PIN)
     logEntry = models.EventLog(source="WebUI",action="TurnOn")
     db.session.add(logEntry)
     db.session.commit()
@@ -16,6 +19,7 @@ def turnon():
 
 @app.route('/turnoff')
 def turnoff():
+    Relay.turnOff(RELAY_PIN)
     logEntry = models.EventLog(source="WebUI",action="TurnOff")
     db.session.add(logEntry)
     db.session.commit()
