@@ -14,7 +14,7 @@ NUM_TASK_RUNS = 4
 WATERING_INTERVAL = 5
 INTERVAL_BETWN_WATER_HR = 6
 
-@app.route('/index')
+@app.route('/index', methods=[GET])
 def index():
     return render_template("index.html")
 
@@ -42,7 +42,7 @@ def turnoff(eventSrc=None):
     db.session.commit()
     return 'ok'
 
-@app.route('/refreshlist')
+@app.route('/list',methods=[GET])
 def refreshlist():
     logs = models.EventLog.query.order_by(models.EventLog.id.desc())
     return render_template("loglist.html",logs=logs) 

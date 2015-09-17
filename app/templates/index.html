@@ -77,7 +77,7 @@
      <script>
     $(document).ready(function(){
     console.log("On Document Ready")
-    $.ajax({url: "/refreshlist", success: function(result){
+    $.ajax({url: "/list", success: function(result){
         $("#logentries").html(result);
     }});
    
@@ -85,7 +85,7 @@
         $.ajax({url: "/turnon", success: function(result){
             console.log("Turned on")
         }});
-        $.ajax({url: "/refreshlist", success: function(result){
+        $.ajax({url: "/list", success: function(result){
              $("#logentries").html(result);
         }});
     });
@@ -93,7 +93,7 @@
         $.ajax({url: "/turnoff", success: function(result){
             console.log("Turned off")
         }});
-        $.ajax({url: "/refreshlist", success: function(result){
+        $.ajax({url: "/list", success: function(result){
              $("#logentries").html(result);
         }});
     });

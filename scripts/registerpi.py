@@ -2,27 +2,25 @@ import paho.mqtt.client as mqtt
 
 # register.py script 
 #1.Connect to the broker on the common 'register' topic
-#2.Subscribe to that topic and publish a new pi message
-#3.Process the subsequent message and write the new topic name to file
+#2.Publish a new pi message with the mac address
+#3.Subsequent communication will take place through a new topic=macaddress
 
 # print result code on connecting to the broker, subscribe 
 def on_connect(client, userdata, rc):
-    print("Connected with result code "+str(rc))
-        # Subscribing in on_connect() means that if we lose the connection and
+    	print("Connected with result code "+str(rc))
         # reconnect then subscriptions will be renewed.
-    client.subscribe("register/")
+    	macaddress = open('/sys/class/net/eth0/address').read()
+	register(str(macaddress))
+	client.subscribe(str(macaddress))
 
 #Process the message and write the new assigned topic name to file 
 def on_message(client, userdata, msg):
-	if(str(msg.payload).startswith("newtopic")):
-		file=open('topicname.txt','w')
-		file.write(msg.payload)
-        	print(msg.topic+" "+str(msg.payload))
-	
+		print(msg.topic+" "+str(msg.payload))
+
 # Notify the broker that a new pi wants to connect
-# Registration
-def register()
-	mqtt.publish("register/","newpi")
+# First time communicate through the common topic 'register'
+def register(macaddress)
+	mqtt.publish("register/",macaddress)
 
 client = mqtt.Client()
 client.on_connect = on_connect
