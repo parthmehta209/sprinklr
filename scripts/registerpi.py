@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import subprocess
 
 # register.py script 
 #1.Connect to the broker on the common 'register' topic
@@ -6,6 +7,9 @@ import paho.mqtt.client as mqtt
 #3.Subsequent communication will take place through a new topic=macaddress
 
 # print result code on connecting to the broker, subscribe 
+
+RELAY_PIN=14
+
 def on_connect(client, userdata, rc):
     	print("Connected with result code "+str(rc))
         # reconnect then subscriptions will be renewed.
@@ -13,10 +17,17 @@ def on_connect(client, userdata, rc):
 	register(str(macaddress))
 	client.subscribe(str(macaddress))
 
-#Process the message and write the new assigned topic name to file 
+#Process the message 
+#If msg=turnon, turnon the water pump
+#If msg=turnoff, turnoff the water pump 
 def on_message(client, userdata, msg):
-		print(msg.topic+" "+str(msg.payload))
-
+		if(msg.payload=='ON'):
+			print(msg.topic+" "+str(msg.payload))
+			subprocess.call(['gpio','export',RELAY_PIN,'out'])
+		elif(msg.payload=='OFF')
+			print(msg.topic+" "str(msg.payload))
+			subprocess.call(['gpio','export',RELAY_PIN,'in'])
+		
 # Notify the broker that a new pi wants to connect
 # First time communicate through the common topic 'register'
 def register(macaddress)
